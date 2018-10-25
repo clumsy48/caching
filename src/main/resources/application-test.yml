@@ -1,0 +1,19 @@
+spring:
+    profile: test
+    datasource:
+        driverClassName: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/downloader
+        username: root
+        password: root
+        platform: mysql
+    jpa:
+        hibernate.ddl-auto: update
+        generate-ddl: true
+        show-sql: true
+    cache:
+        cache-names: name
+        caffeine:
+            spec: maximumSize=500, expireAfterAccess=3600s
+logging:
+    level:
+        root: INFO
