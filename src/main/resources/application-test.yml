@@ -14,3 +14,5 @@ spring:
 logging:
     level:
         root: INFO
+
+caffeinceSpec: maximumSize=10,expireAfterAccess=4h,recordStats

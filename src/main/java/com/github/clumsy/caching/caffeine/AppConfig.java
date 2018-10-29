@@ -1,6 +1,7 @@
 package com.github.clumsy.caching.caffeine;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.caffeine.CaffeineCache;
 import org.springframework.cache.support.SimpleCacheManager;
@@ -14,15 +15,14 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class AppConfig {
 
+    @Value("${caffeinceSpec}")
+    private String spec;
     @Bean
     public CacheManager cacheManager() {
 
         SimpleCacheManager simpleCacheManager = new SimpleCacheManager();
 
-        CaffeineCache stringStringCache = new CaffeineCache("name", Caffeine.newBuilder()
-                .recordStats()
-                .maximumSize(100)
-                .expireAfterWrite(20, TimeUnit.SECONDS)
+        CaffeineCache stringStringCache = new CaffeineCache("name", Caffeine.from(spec)
                 .build());
 
         simpleCacheManager.setCaches(Collections.singleton(stringStringCache));
