@@ -1,14 +1,12 @@
 package com.github.clumsy.caching.caffeine.service;
 
-import com.github.clumsy.caching.caffeine.entity.Book;
+        import com.github.clumsy.caching.caffeine.entity.Book;
 
-import java.util.List;
+        import java.util.Map;
 
 public interface BookStorageService  {
 
     void save(Book book);
 
-    List<Object[]> findNameAndauthor();
-
-    Book findNameById(String id) throws InterruptedException;
+    Map<String,String> findNameById();
 }

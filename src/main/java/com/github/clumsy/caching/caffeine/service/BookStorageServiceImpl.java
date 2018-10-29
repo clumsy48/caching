@@ -4,11 +4,12 @@ import com.github.clumsy.caching.caffeine.entity.Book;
 import com.github.clumsy.caching.caffeine.repositories.BookRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -21,14 +22,14 @@ public class BookStorageServiceImpl implements BookStorageService {
         bookRepository.save(book);
     }
 
+    @Cacheable("name")
     @Override
-    public List<Object[]> findNameAndauthor() {
-        return bookRepository.findBooks();
-    }
-
-    @Cacheable(value = "name" ,sync=true)
-    public Book findNameById(String id)  {
+    public Map<String,String> findNameById() {
         log.info("db call");
-        return bookRepository.findById(id).get();
+        return IteratorUtils.toList(bookRepository
+                .findAll()
+                .iterator())
+                .stream()
+                .collect(Collectors.toMap(Book::getId,Book::getName));
     }
 }
